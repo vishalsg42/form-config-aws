@@ -1,0 +1,17 @@
+{
+  "name": "form-config-aws",
+  "version": "1.0.0",
+  "description": "Please update credentials.yaml with presented data",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com-vishalsg42:vishalsg42/form-config-aws.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
