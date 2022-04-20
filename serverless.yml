@@ -1,0 +1,54 @@
+service: form-config-aws
+frameworkVersion: '2 || 3'
+variablesResolutionMode: 20210326
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  lambdaHashingVersion: '20201221'
+  # environment:
+    # DATABASE_URL: !Ref StoreConfigBucket
+
+functions:
+  hello:
+    handler: index.handler
+    name: store-api-lambda
+    timeout: 28
+    memorySize: 512
+    environment:
+      STORE_BUCKET_NAME: !Ref StoreConfigBucket
+    events:
+      - http:
+          path: /store
+          method: post
+      - http:
+          path: /store/{store_hash}
+          method: patch
+
+resources:
+  Resources:
+    StoreConfigBucket:
+      Type: "AWS::S3::Bucket"
+      Properties:
+        BucketName: store-config-hash
+    S3BucketPolicy:
+      Type: "AWS::S3::BucketPolicy"
+      Properties:
+        Bucket: !Ref StoreConfigBucket
+        PolicyDocument:
+          Statement:
+            - Action:
+                - "s3:GetObject"
+                - "s3:PutObject"
+              Effect: Allow
+              Resource:
+                - !Sub arn:aws:s3:::${StoreConfigBucket}
+                - !Sub arn:aws:s3:::${StoreConfigBucket}/*
+              Principal:
+                AWS:
+                  - '*'
+  Outputs:
+      StoreConfigBucketName:
+        Value: !Ref StoreConfigBucket
+        Export:
+          Name: StoreConfigBucketName
