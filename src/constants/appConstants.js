@@ -14,9 +14,7 @@ module.exports = {
   },
   EVENT: {
     '/store': {
-      "POST": 'GENERATE_STORE_CONFIG'
-    },
-    '/store/{store_hash}': {
+      "POST": 'GENERATE_STORE_CONFIG',
       "PUT": 'UPDATE_STORE_CONFIG'
     },
   },

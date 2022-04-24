@@ -78,16 +78,16 @@ class StoreBiz {
       }
       try {
         let {
-          body,
-          storehash
+          body
         } = payload;
         body = JSON.parse(body);
 
-        const storeObjectPath = `${body.store_hash}.${APP_CONSTANTS.JSON}`;
 
         // payload validation
         const validator = new RequestValidator(SAVE_STORE_CONFIG);
         validator.create(body);
+
+        const storeObjectPath = `${body.store_hash}.${APP_CONSTANTS.JSON}`;
 
         // Checking if store config already exist
         let checkIfFileExist = await this.checkIfFileExist(storeObjectPath);
@@ -97,10 +97,16 @@ class StoreBiz {
         }
 
         let data = await this.s3Biz.getObject(storeObjectPath);
+        if(data) {
+          try {
+            data = JSON.parse(data.Body.toString())
+          } catch (er) {
+            data = {}
+          }
+        }
 
         // saving payload
         body = {
-          store_hash: storehash,
           ...data,
           ...body
         }
@@ -115,6 +121,7 @@ class StoreBiz {
 
         response.result = true
         response.payload = body;
+        response.data = { url : `https://${process.env.STORE_BUCKET_NAME}.s3.amazonaws.com/${storeObjectPath}`};
         resolve(response);
       } catch (error) {
         console.error("error while updating store config", error);

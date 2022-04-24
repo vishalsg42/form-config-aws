@@ -35,7 +35,7 @@ module.exports = {
     }
   },
   UPDATE_STORE_CONFIG: {
-    id: '/store/{store_hash}',
+    id: '/store',
     type: 'object',
     required: ['store_hash'],
     properties: {
