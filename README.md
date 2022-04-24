@@ -8,8 +8,8 @@ Please update credentials.yaml with presented data
 
 ### To deploy stack
 
-> serverless deploy --profile <aws_profile_name>
+> serverless deploy --profile <aws_profile_name> --region <aws-region>
 
 ### To delete stack 
 
-> serverless remove --profile <aws_profile_name>
+> serverless remove --profile <aws_profile_name> --region <aws-region>
