@@ -33,14 +33,6 @@ class StoreBiz {
           return resolve(response);
         }
 
-        let data = await this.s3Biz.getObject(storeObjectPath);
-        console.log("data", data);
-        // saving payload
-        body = {
-          store_hash: storehash,
-          ...data,
-          ...body
-        }
         const s3ObjectName = storeObjectPath;
         await this.s3Biz.putBase64Object(
           s3ObjectName,
@@ -50,7 +42,8 @@ class StoreBiz {
 
         response.result = true
         response.payload = body;
-        // response.data = { url : `${}`};
+        response.data = { url : `https://${process.env.STORE_BUCKET_NAME}.s3.amazonaws.com/${storeObjectPath}`};
+
         resolve(response);
       } catch (error) {
         console.error("error while saving store config", error);
@@ -101,6 +94,15 @@ class StoreBiz {
 
         if (!checkIfFileExist) {
           return resolve(response);
+        }
+
+        let data = await this.s3Biz.getObject(storeObjectPath);
+
+        // saving payload
+        body = {
+          store_hash: storehash,
+          ...data,
+          ...body
         }
 
         // saving payload

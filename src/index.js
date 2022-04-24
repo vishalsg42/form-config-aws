@@ -15,7 +15,8 @@ exports.handler = async (event) => {
           response = generateResponsePayload(200, {}, {
             success: true,
             message: SUCCESS_MESSAGE,
-          })
+            data: storeResponse.data
+          });
         } else {
           response = generateResponsePayload(400, {}, {
             success: false,
